@@ -19,13 +19,18 @@ def start_message(message):
     bot.send_message(chat_id=message.chat.id, text="Выберете действие:", reply_markup=markup)
 
 
-@bot.message_handler(content_types=['text'])
+@bot.message_handler(regexp='Редактировать напоминание')
 def handle_message(message):
-    if message.text == 'Редактировать напоминание':
-        bot.send_message(message.chat.id, 'Редактируем')
-    elif message.text == 'Создать напоминание':
-        bot.send_message(message.chat.id, 'Создаем')
-    elif message.text == 'Список всех напоминаний':
-        bot.send_message(message.chat.id, 'Список')
-    else:
-        bot.send_message(message.chat.id, 'Не понимаю, о чем ты')
+    bot.send_message(message.chat.id, 'Редактируем')
+
+
+@bot.message_handler(regexp='Создать напоминание')
+def handle_message(message):
+    bot.send_message(message.chat.id, 'Когда выхотите получить напоминание?')
+    bot.send_message(message.chat.id, 'Введите дату в формате дд.мм.гг чч:мм')
+    
+    
+@bot.message_handler(regexp='Список всех напоминаний')
+def handle_message(message):
+    bot.send_message(message.chat.id, 'Список')
+    
