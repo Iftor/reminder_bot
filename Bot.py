@@ -1,4 +1,5 @@
 import telebot
+import NoBotFunctions
 
 try:
     from Token import token
@@ -7,7 +8,7 @@ except ImportError:
 
 
 bot = telebot.TeleBot(token)
-
+date_rem = []
 
 @bot.message_handler(commands=['start'])
 def start_message(message):
@@ -27,10 +28,23 @@ def handle_message(message):
 @bot.message_handler(regexp='Создать напоминание')
 def handle_message(message):
     bot.send_message(message.chat.id, 'Когда выхотите получить напоминание?')
-    bot.send_message(message.chat.id, 'Введите дату в формате дд.мм.гг чч:мм')
+    bot.send_message(message.chat.id, 'Введите дату в формате дд.мм чч:мм')
     
     
 @bot.message_handler(regexp='Список всех напоминаний')
 def handle_message(message):
     bot.send_message(message.chat.id, 'Список')
+    
+
+@bot.message_handler(regexp='^[0-3][0-9]\.[0-1][0-9] [0-2][0-9]:[0-5][0-9]$')
+def handle_message(message):
+    date_rem.append(message.text)
+    bot.send_message(message.chat.id, 'Введите напоминание, начав его с $')
+
+
+@bot.message_handler(content_types=['text'])
+def handle_message(message):
+    if message.text[0] == '$':
+        date_rem.append(message.text[1:])
+        NoBotFunctions.add_remind(date_rem)
     
