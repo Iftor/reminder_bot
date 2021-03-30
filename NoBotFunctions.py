@@ -25,3 +25,7 @@ def issue_remind():
                 reminds.pop(i)
         else:
             sleep(30)
+
+
+def bot_polling():
+    bot.polling()
