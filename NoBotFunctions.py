@@ -23,8 +23,8 @@ def issue_remind():
                     and remind['date'].minute == current_datetime.minute):
                 bot.send_message(remind['id'], remind['text'])
                 reminds.pop(i)
-        else:
-            sleep(30)
+            else:
+                sleep(30)
 
 
 def bot_polling():
