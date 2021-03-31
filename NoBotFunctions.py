@@ -7,6 +7,8 @@ reminds = []
 
 
 def add_remind(date_rem_id):
+    """Функция добавления напоминания в список напоминаний"""
+    
     date = datetime.strptime(date_rem_id[0], '%d.%m %H:%M')
     remind = {'date': date, 'text': date_rem_id[1], 'id': date_rem_id[2]}
     reminds.append(remind)
@@ -14,6 +16,12 @@ def add_remind(date_rem_id):
 
 
 def issue_remind():
+    """Функция поиска напоминаний.
+    
+    Сравнивает дату и время напоминания с настоящими датой и временем.
+    Если было найдено напоминание, то пользователю выдается его напоминание.
+    """
+    
     while True:
         current_datetime = datetime.now()
         for i, remind in enumerate(reminds):
@@ -28,4 +36,6 @@ def issue_remind():
 
 
 def bot_polling():
+    """Работа бота"""
+    
     bot.polling()
