@@ -8,7 +8,7 @@ except ImportError:
 
 
 bot = telebot.TeleBot(token)
-date_rem_id = [None, None, None]
+time_rem_id = [None, None, None]
 
 
 @bot.message_handler(commands=['start'])
@@ -35,7 +35,7 @@ def handle_message(message):
     """Обработчик кнопки 'Создать напоминание'."""
     
     bot.send_message(message.chat.id, 'Когда вы хотите получить напоминание?')
-    bot.send_message(message.chat.id, 'Введите дату в формате дд.мм чч:мм')
+    bot.send_message(message.chat.id, 'Введите время в формате чч:мм')
     
     
 @bot.message_handler(regexp='Список всех напоминаний')
@@ -45,11 +45,11 @@ def handle_message(message):
     bot.send_message(message.chat.id, 'Список')
     
 
-@bot.message_handler(regexp='^[0-3][0-9]\.[0-1][0-9] [0-2][0-9]:[0-5][0-9]$')
+@bot.message_handler(regexp='^[0-2][0-9]:[0-5][0-9]$')
 def handle_message(message):
     """Функция записи даты напоминания."""
  
-    date_rem_id[0] = message.text
+    time_rem_id[0] = message.text
     bot.send_message(message.chat.id, 'Введите напоминание, начав его с $')
 
 
@@ -58,6 +58,6 @@ def handle_message(message):
     """Функция записи текста напоминания (также вызывает функцию добавления напоминания)."""
  
     if message.text[0] == '$':
-        date_rem_id[1] = message.text[1:]
-        date_rem_id[2] = message.chat.id
-        NoBotFunctions.add_remind(date_rem_id)
+        time_rem_id[1] = message.text[1:]
+        time_rem_id[2] = message.chat.id
+        NoBotFunctions.add_remind(time_rem_id)
