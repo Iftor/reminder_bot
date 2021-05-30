@@ -1,4 +1,3 @@
-from datetime import datetime
 from Bot import bot
 from time import sleep
 import schedule
@@ -14,9 +13,9 @@ def send_message_func(remind):
 def add_remind(time_rem_id):
     """Функция добавления напоминания в расписание"""
     
-    time = datetime.strptime(time_rem_id[0], '%H:%M')
+    time = time_rem_id[0].split(':')
     remind = {'text': time_rem_id[1], 'id': time_rem_id[2]}
-    schedule.every().day.at(f'{time.hour}:{time.minute}').do(send_message_func, remind=remind)
+    schedule.every().day.at(f'{time[0]}:{time[1]}').do(send_message_func, remind=remind)
     time_rem_id[0], time_rem_id[1], time_rem_id[2] = None, None, None
 
 
