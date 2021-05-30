@@ -1,38 +1,31 @@
 from datetime import datetime
 from Bot import bot
 from time import sleep
+import schedule
 
 
-reminds = []
-
-
-def add_remind(date_rem_id):
-    """Функция добавления напоминания в список напоминаний"""
+def send_message_func(remind):
+    """Функция выдачи напоминания"""
     
-    date = datetime.strptime(date_rem_id[0], '%d.%m %H:%M')
-    remind = {'date': date, 'text': date_rem_id[1], 'id': date_rem_id[2]}
-    reminds.append(remind)
-    date_rem_id[0], date_rem_id[1], date_rem_id[2] = None, None, None
+    bot.send_message(remind['id'], remind['text'])
+    return schedule.CancelJob
+
+
+def add_remind(time_rem_id):
+    """Функция добавления напоминания в расписание"""
+    
+    time = datetime.strptime(time_rem_id[0], '%H:%M')
+    remind = {'text': time_rem_id[1], 'id': time_rem_id[2]}
+    schedule.every().day.at(f'{time.hour}:{time.minute}').do(send_message_func, remind=remind)
+    time_rem_id[0], time_rem_id[1], time_rem_id[2] = None, None, None
 
 
 def issue_remind():
-    """Функция поиска напоминаний.
-    
-    Сравнивает дату и время напоминания с настоящими датой и временем.
-    Если было найдено напоминание, то пользователю выдается его напоминание.
-    """
-    
+    """Функция выдачи напоминаний по расписанию"""
+
     while True:
-        current_datetime = datetime.now()
-        for i, remind in enumerate(reminds):
-            if (remind['date'].day == current_datetime.day
-                    and remind['date'].month == current_datetime.month
-                    and remind['date'].hour == current_datetime.hour
-                    and remind['date'].minute == current_datetime.minute):
-                bot.send_message(remind['id'], remind['text'])
-                reminds.pop(i)
-            else:
-                sleep(30)
+        schedule.run_pending()
+        sleep(1)
 
 
 def bot_polling():
