@@ -26,7 +26,7 @@ def start_message(message):
 @bot.message_handler(regexp='Редактировать напоминание')
 def handle_message(message):
     """Обработчик кнопки 'Редактируем'."""
-    
+
     bot.send_message(message.chat.id, 'Редактируем')
 
 
@@ -42,7 +42,7 @@ def handle_message(message):
 def handle_message(message):
     """Обработчик кнопки 'Список всех напоминаний'."""
  
-    bot.send_message(message.chat.id, 'Список')
+    NoBotFunctions.print_reminds_list(message.chat.id)
     
 
 @bot.message_handler(regexp='^[0-2][0-9]:[0-5][0-9]$')
@@ -61,3 +61,4 @@ def handle_message(message):
         time_rem_id[1] = message.text[1:]
         time_rem_id[2] = message.chat.id
         NoBotFunctions.add_remind(time_rem_id)
+        bot.send_message(message.chat.id, 'Напоминание создано')
