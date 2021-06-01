@@ -27,6 +27,8 @@ def add_remind(time_rem_id):
 
 
 def print_reminds_list(id):
+    """Функция просмотра списка напоминаний"""
+    
     message = ''
     if id in reminds:
         for remind in reminds[id]:
