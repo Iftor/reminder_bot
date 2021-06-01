@@ -19,7 +19,8 @@ def add_remind(time_rem_id):
     time = time_rem_id[0].split(':')
 
     remind = {'time': time_rem_id[0], 'text': time_rem_id[1], 'id': time_rem_id[2]}
-    schedule.every().day.at(f'{time[0]}:{time[1]}').do(send_message_func, remind=remind)
+    job = schedule.every().day.at(f'{time[0]}:{time[1]}').do(send_message_func, remind=remind)
+    remind['job'] = job
     if remind['id'] in reminds:
         reminds[remind['id']].append(remind)
     else:
@@ -29,13 +30,24 @@ def add_remind(time_rem_id):
 
 
 def print_reminds_list(id):
+    """Функция просмотра списка напоминаний"""
+    
     message = ''
     if id in reminds:
-        for remind in reminds[id]:
-            message += f'{remind["time"]}: {remind["text"]}\n'
+        for i, remind in enumerate(reminds[id]):
+            message += f'№{i + 1} ({remind["time"]}) {remind["text"]}\n'
     else:
         message = 'Список пуст'
     bot.send_message(id, message)
+
+
+def edit_remind(id, number, text):
+    """Функция редактирования напоминания"""
+    
+    remind = reminds[id][number - 1]
+    reminds[id].remove(remind)
+    schedule.cancel_job(remind['job'])
+    add_remind([remind['time'], text, id])
 
 
 def issue_remind():

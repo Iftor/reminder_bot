@@ -27,7 +27,7 @@ def start_message(message):
 def handle_message(message):
     """Обработчик кнопки 'Редактируем'."""
 
-    bot.send_message(message.chat.id, 'Редактируем')
+    bot.send_message(message.chat.id, 'Введите номер напоминания и новое сообщение')
 
 
 @bot.message_handler(regexp='Создать напоминание')
@@ -62,3 +62,6 @@ def handle_message(message):
         time_rem_id[2] = message.chat.id
         NoBotFunctions.add_remind(time_rem_id)
         bot.send_message(message.chat.id, 'Напоминание создано')
+    
+    elif message.text[0] == '№':
+        NoBotFunctions.edit_remind(message.chat.id, int(message.text[1]), message.text[2:])
