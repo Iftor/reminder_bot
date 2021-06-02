@@ -41,13 +41,14 @@ def print_reminds_list(id):
     bot.send_message(id, message)
 
 
-def edit_remind(id, number, text):
+def edit_remind(id, num_text):
     """Функция редактирования напоминания"""
     
-    remind = reminds[id][number - 1]
+    remind = reminds[id][num_text[0] - 1]
     reminds[id].remove(remind)
     schedule.cancel_job(remind['job'])
-    add_remind([remind['time'], text, id])
+    add_remind([remind['time'], num_text[1], id])
+    num_text[0], num_text[1] = None, None
 
 
 def issue_remind():
